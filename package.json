@@ -1,0 +1,38 @@
+{
+  "name": "polymarket-btc-arb",
+  "version": "1.0.0",
+  "description": "Polymarket BTC arbitrage bot exploiting Binance price lag",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "monitor": "tsx src/monitor.ts",
+    "backtest": "tsx src/backtest.ts"
+  },
+  "keywords": [
+    "polymarket",
+    "arbitrage",
+    "bitcoin",
+    "trading"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@polymarket/clob-client": "^4.3.0",
+    "axios": "^1.6.2",
+    "chalk": "^5.3.0",
+    "cli-table3": "^0.6.3",
+    "dotenv": "^16.3.1",
+    "ethers": "^6.9.0",
+    "ora": "^8.0.1",
+    "ws": "^8.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/ws": "^8.5.10",
+    "tsx": "^4.6.2",
+    "typescript": "^5.3.2"
+  }
+}
