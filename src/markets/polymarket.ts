@@ -139,6 +139,9 @@ export class PolymarketClient extends EventEmitter {
         }
       });
 
+      //打印response
+      console.log(response);
+
       const markets: BTCMarket[] = [];
 
       for (const market of response.data) {
