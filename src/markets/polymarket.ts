@@ -206,6 +206,9 @@ export class PolymarketClient extends EventEmitter {
         direction = 'DOWN';
       }
 
+      //打印direction
+      console.log(`[Polymarket] Direction: ${direction}`);
+
       // Extract target price if present
       const priceMatch = raw.question.match(/\$?([\d,]+(?:\.\d+)?)/);
 
@@ -234,6 +237,9 @@ export class PolymarketClient extends EventEmitter {
     try {
       const response = await this.api.get(`/markets/${marketId}`);
       const market = response.data;
+
+      //打印market 前缀[Polymarket] Market
+      console.log(`[Polymarket] Market marketId: ${JSON.stringify(market)}`);
 
       const prices = market.outcomePrices?.map((p: string) => parseFloat(p)) || [0.5, 0.5];
 

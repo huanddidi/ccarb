@@ -132,6 +132,8 @@ export class ArbitrageEngine extends EventEmitter {
     }
 
     // Check for lag opportunities
+    //打印movement
+    console.log(`binance onPriceMovement movement: ${JSON.stringify(movement)}`);
     this.checkLagOpportunity(movement);
   }
 
@@ -182,6 +184,12 @@ export class ArbitrageEngine extends EventEmitter {
 
       // Analyze for arbitrage opportunity
       const signal = this.analyzeOpportunity(market, oddsData.odds, currentMovement, lagSeconds);
+
+      //打印signal.expectedEdge
+      if (signal) {
+        console.log(`signal.expectedEdge: ${signal.expectedEdge}`);
+      }
+
 
       if (signal && signal.expectedEdge >= this.config.minEdgeThreshold) {
         this.emitSignal(signal);
