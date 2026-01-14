@@ -35,7 +35,7 @@ export class BinanceFeed extends EventEmitter {
     super();
     this.symbol = symbol.toLowerCase();
     this.priceWindowMs = priceWindowMs;
-    this.wsUrl = `wss://stream.binance.com:9443/ws/${this.symbol}@trade`;
+    this.wsUrl = `wss://stream.binance.me:9443/ws/${this.symbol}@trade`;
   }
 
   async connect(): Promise<void> {
