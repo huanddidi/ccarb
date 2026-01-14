@@ -134,7 +134,8 @@ export class PolymarketClient extends EventEmitter {
         params: {
           active: true,
           closed: false,
-          limit: 100
+          limit: 100,
+          slug: "Bitcoin Up or Down - January 14, 8AM ET",
         }
       });
 
@@ -142,34 +143,34 @@ export class PolymarketClient extends EventEmitter {
 
       for (const market of response.data) {
         // Filter for BTC 15-minute window markets
-        const question = market.question?.toLowerCase() || '';
-        const isBTCMarket =
-          question.includes('bitcoin') ||
-          question.includes('btc') ||
-          question.includes('₿');
+        // const question = market.question?.toLowerCase() || '';
+        // const isBTCMarket =
+        //   question.includes('bitcoin') ||
+        //   question.includes('btc') ||
+        //   question.includes('₿');
 
-        const isTimeWindow =
-          question.includes('15 min') ||
-          question.includes('15-min') ||
-          question.includes('15min') ||
-          question.includes('1 hour') ||
-          question.includes('next hour');
+        // const isTimeWindow =
+        //   question.includes('15 min') ||
+        //   question.includes('15-min') ||
+        //   question.includes('15min') ||
+        //   question.includes('1 hour') ||
+        //   question.includes('next hour');
 
-        const isPriceMarket =
-          question.includes('above') ||
-          question.includes('below') ||
-          question.includes('higher') ||
-          question.includes('lower') ||
-          question.includes('up') ||
-          question.includes('down');
+        // const isPriceMarket =
+        //   question.includes('above') ||
+        //   question.includes('below') ||
+        //   question.includes('higher') ||
+        //   question.includes('lower') ||
+        //   question.includes('up') ||
+        //   question.includes('down');
 
-        if (isBTCMarket && (isTimeWindow || isPriceMarket)) {
+        // if (isBTCMarket && (isTimeWindow || isPriceMarket)) {
           const btcMarket = this.parseMarket(market);
           if (btcMarket) {
             markets.push(btcMarket);
             this.activeMarkets.set(btcMarket.id, btcMarket);
           }
-        }
+        // }
       }
 
       this.emit('marketsUpdated', markets);
@@ -182,28 +183,29 @@ export class PolymarketClient extends EventEmitter {
 
   private parseMarket(raw: any): BTCMarket | null {
     try {
-      const outcomes = raw.outcomes || ['Yes', 'No'];
+      const outcomes = raw.outcomes || ['Up', 'Down'];
       const prices = raw.outcomePrices?.map((p: string) => parseFloat(p)) || [0.5, 0.5];
 
       // Extract window minutes from question
-      let windowMinutes = 15; // default
-      const question = raw.question || '';
-      if (question.includes('1 hour') || question.includes('60 min')) {
-        windowMinutes = 60;
-      } else if (question.includes('5 min')) {
-        windowMinutes = 5;
-      }
+      let windowMinutes = 240; // default
+      // const question = raw.question || '';
+      // if (question.includes('1 hour') || question.includes('60 min')) {
+      //   windowMinutes = 60;
+      // } else if (question.includes('5 min')) {
+      //   windowMinutes = 5;
+      // }
 
-      // Determine direction from question
+      // Determine direction from outcome prices
       let direction: 'UP' | 'DOWN' | undefined;
-      if (question.toLowerCase().includes('above') || question.toLowerCase().includes('higher')) {
+      if (prices[0] > prices[1]) {
         direction = 'UP';
-      } else if (question.toLowerCase().includes('below') || question.toLowerCase().includes('lower')) {
+      } else if (prices[0] < prices[1]) {
         direction = 'DOWN';
       }
 
       // Extract target price if present
-      const priceMatch = question.match(/\$?([\d,]+(?:\.\d+)?)/);
+      const priceMatch = raw.question.match(/\$?([\d,]+(?:\.\d+)?)/);
+
       const targetPrice = priceMatch ? parseFloat(priceMatch[1].replace(',', '')) : undefined;
 
       return {
