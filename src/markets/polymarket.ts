@@ -135,7 +135,7 @@ export class PolymarketClient extends EventEmitter {
           active: true,
           closed: false,
           limit: 100,
-          slug: "Bitcoin Up or Down - January 14, 8AM ET",
+          slug: "bitcoin-up-or-down-january-14-11am-et",
         }
       });
 
@@ -190,7 +190,7 @@ export class PolymarketClient extends EventEmitter {
       const prices = raw.outcomePrices?.map((p: string) => parseFloat(p)) || [0.5, 0.5];
 
       // Extract window minutes from question
-      let windowMinutes = 240; // default
+      let windowMinutes = 60; // default
       // const question = raw.question || '';
       // if (question.includes('1 hour') || question.includes('60 min')) {
       //   windowMinutes = 60;
